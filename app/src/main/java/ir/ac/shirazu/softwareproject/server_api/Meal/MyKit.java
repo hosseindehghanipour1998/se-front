@@ -44,59 +44,14 @@ public class MyKit {
 
     }
 
-
-
     //PRIVATE
-    private static void parseFoodInfo(String responseBody, Student student) {
-
-        try {
-//            FoodInfo foodInfo = new FoodInfo();
-            JSONArray information = new JSONArray(responseBody);
-            for (int i = 0; i < information.length(); i++) {
-                JSONObject album = information.getJSONObject(i);
-                student.setFirstName(album.getString("food_name"));
-                student.setLastName(album.getString("food_id"));
-                student.setCredit(album.getInt("food_price"));
-            }
-        } catch (Exception e) {
-
-        }
-
-
-    }
-
-
-    private static void parseStudentPersonalInfo(String responseBody, Student student) {
-        try {
-            JSONArray albums = new JSONArray(responseBody);
-            for (int i = 0; i < albums.length(); i++) {
-                JSONObject album = albums.getJSONObject(i);
-                student.setFirstName(album.getString("first_name"));
-                student.setLastName(album.getString("last_name"));
-                student.setCredit(album.getInt("credit"));
-                //student.setStudentNumber(album.getString("student_no));
-                //student.setId(album.getInt("id"));
-
-            }
-        } catch (Exception e) {
-
-        }
-
-    }
-
     private static String loginInformationToJson(String user, String password) {
         return "{\"user\" : " + user + ", \"password\": \"" + password + "\"} ";
-    }
-
-    private static String logoutInformationToJson(String token) {
-        return "{\"token\" : \"" + token + " \"}";
     }
 
     private static String tokenToJson(String token) {
         return "{\"token\" : \"" + token + " \"}";
     }
-
-
 
     private static String sendPostRequest(String jsonInformation, String serverURL) throws Exception {
 
@@ -110,16 +65,12 @@ public class MyKit {
         String urlParameters = jsonInformation;
         // Send post request
         con.setDoOutput(true);
-     //   Thread.sleep(300);
         DataOutputStream wr = new DataOutputStream(con.getOutputStream());
-        //Thread.sleep(300);
         wr.writeBytes(urlParameters);
         wr.flush();
         wr.close();
         int responseCode = con.getResponseCode();
-        Log.d("HOSSEIN", "\nSending 'POST' request to URL : " + url);
-        Log.d("HOSSEIN", "Post parameters : " + urlParameters);
-        Log.d("HOSSEIN", "Response Code : " + responseCode);
+
 
 //        InputStream input = obj.openStream();
         InputStream input = con.getInputStream();
@@ -144,29 +95,20 @@ public class MyKit {
         else {
             return response.toString();
         }
-
-
-
     }
 
     private static void totalInfoToJSONs(String responseBody, HashMap<String, JSONObject> list) {
 
         try {
             JSONObject information = new JSONObject(responseBody);
-
-            //HashMap<String , JSONObject> totalInfoToJson = new HashMap<>() ;
             list.put("student", information.getJSONObject("student"));
             list.put("coupons", information.getJSONObject("coupons"));
             list.put("self_data", information.getJSONObject("self_data"));
-            //list.add(information.getJSONObject("student"));
-            //list.add(information.getJSONObject("coupons"));
-            //list.add(information.getJSONObject("self_data"));
         } catch (Exception e) {
 
         }
 
     }
-
 
     private static void fillStudentPersonalData(Student student, JSONObject jsonObject) {
         try {
@@ -178,8 +120,6 @@ public class MyKit {
         } catch (Exception e) {
 
         }
-
-
     }
 
     private static HashMap<String, JSONObject> parseJsonObjectToHashMap(JSONObject object) {
@@ -193,14 +133,10 @@ public class MyKit {
                 String key = (String) x.next();
                 jsonArray.put(object.get(key));
                 jsonObjectKeys.add(key);
-                //hashMap.put(key,object.get(key)) ;
             }
 
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject album = jsonArray.getJSONObject(i);
-                //System.out.println("KEY : " + jsonObjectKeys.get(i) + "\n");
-                //System.out.println("VALUE : " +  jsonArray.getJSONObject(i) + "\n");
-                //System.out.println("\n ================================ \n" );
                 hashMap.put(jsonObjectKeys.get(i), jsonArray.getJSONObject(i));
             }
 
@@ -234,7 +170,7 @@ public class MyKit {
             if (userToken == null) {
                 return null;
             }
-            Log.d("HOSSEIN", "Outside SendPostRequest Method");
+
             newStudent.setUser_token(userToken);
 
 
@@ -273,37 +209,6 @@ public class MyKit {
         return newStudent;
     }
 
-
-
-    protected String logout(String prams[]) {  /////////////This function was former Ondoingbackground()
-        String jsonInformation = prams[0];
-        String url = prams[1];
-        OutputStream out = null;
-        try {
-            URL obj = new URL(url);
-            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-            con.setReadTimeout(2000);
-            con.setConnectTimeout(2000);
-            con.setRequestMethod("POST");
-            con.connect();
-
-            BufferedReader bf = new BufferedReader(new InputStreamReader(con.getInputStream()));
-            StringBuffer response = new StringBuffer();
-            String value;
-            while ((value = bf.readLine()) != null) {
-                response.append(value);
-            }
-            return response.toString();
-
-        } catch (Exception e) {
-
-        }
-
-
-        return null;
-    }
-
-
     public void doLogin(final String user, final String pass) {
 
 
@@ -323,7 +228,6 @@ public class MyKit {
         });
         thread.start();
     }
-
 
     //Newly Added Functions :
 
@@ -346,6 +250,8 @@ public class MyKit {
 
     }
 
+
+    //Test These Functions and methods :
     public void deleteCoupon (Student student ,  int couponId , String studentToken , Context context )throws Exception{
 
         String foodDeleteJson = deleteInfoToJson(Integer.toString(couponId),studentToken);

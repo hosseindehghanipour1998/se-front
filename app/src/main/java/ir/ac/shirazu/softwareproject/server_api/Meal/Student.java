@@ -57,15 +57,6 @@ public class Student {
 
     }
 
-    /*
-        private void showAllMeals(){
-            int i = 1 ;
-            for(MealInfo meal : allStudentFoodInfo){
-                System.out.println("+++++++ Meal(" + (i++)  +") +++++++\n");
-                meal.show();
-            }
-        }
-    */
     public String getSudentType() {
         return studentType;
     }
